@@ -1,7 +1,7 @@
 # Личный проект «TaskForce»
 
 * Студент: [Алексей Балесный](https://up.htmlacademy.ru/yii/1/user/221665).
-* Наставник: `Неизвестно`.
+* Наставник: [Кирилл Сенкевич](https://htmlacademy.ru/profile/id295429).
 
 ---
 
