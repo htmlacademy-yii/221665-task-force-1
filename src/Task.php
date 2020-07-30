@@ -17,8 +17,8 @@ class Task
     const ACTION_DONE = 'done';
     const ACTION_FAIL = 'fail';
 
-    const BUYER = 'buyer';
-    const SELLER = 'seller';
+    const CUSTOMER = 'customer';
+    const EXECUTOR = 'executor';
 
     const STATUS_NAME = [
         self::STATUS_NEW => 'Новое',
@@ -44,27 +44,44 @@ class Task
 
     const action_map = [
         self::STATUS_NEW => [
-            self::SELLER => self::ACTION_REPLY,
-            self::BUYER => self::ACTION_CANCEL
+            self::EXECUTOR => self::ACTION_REPLY,
+            self::CUSTOMER => self::ACTION_CANCEL
         ],
         self::STATUS_CANCEL => null,
         self::STATUS_WORK => [
-            self::BUYER => self::ACTION_DONE,
-            self::SELLER => self::ACTION_FAIL
+            self::CUSTOMER => self::ACTION_DONE,
+            self::EXECUTOR => self::ACTION_FAIL
         ],
         self::STATUS_DONE => null,
         self::STATUS_FAIL => null,
     ];
 
-    // из учебника не очевидно преимущество таких методов перед свойствами
 
-    public static function get_action($status)
+    public function get_action($id)
     {
-        return self::action_map[$status];
+        $next_actions = self::action_map[$this->status];
+        $user_status = $this->get_user_status($id);
+        if ($next_actions && $user_status) {
+            return $next_actions[$user_status];
+        }
+        return null;
+    }
+
+    public function get_user_status($id)
+    {
+        if ($id === $this->customer_id) {
+            return self::CUSTOMER;
+        }
+        if ($id === $this->executor_id) {
+            return self::EXECUTOR;
+        }
+
+        return null;
     }
 
     public static function get_next_status($action)
     {
+        // с эти методом так и не разобрался :(
         return self::status_map[$action];
     }
 
@@ -78,15 +95,15 @@ class Task
         return self::STATUS_NAME;
     }
 
-    public $buyer_id;
-    public $seller_id;
+    public $customer_id;
+    public $executor_id;
     private $status;
 
-    public function __construct($buyer_id, $seller_id)
+    public function __construct($status, $customer_id, $executor_id = null)
     {
-        $this->buyer_id = $buyer_id;
-        $this->seller_id = $seller_id; // при создании задачи нам еще не известен исполнитель
-        $this->status = self::STATUS_NEW;
+        $this->customer_id = $customer_id;
+        $this->executor_id = $executor_id; // для новой задачи нам еще не известен исполнитель
+        $this->status = $status;
     }
 
 }
