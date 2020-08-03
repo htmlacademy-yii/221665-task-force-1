@@ -1,7 +1,7 @@
 <?php
 
 
-namespace TaskForce;
+namespace TaskForce\Model;
 
 class Task
 {
@@ -81,7 +81,6 @@ class Task
 
     public static function get_next_status($action)
     {
-        // с эти методом так и не разобрался :(
         return self::status_map[$action];
     }
 
