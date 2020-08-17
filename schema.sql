@@ -1,8 +1,5 @@
-CREATE DATABASE task_library
-    WITH
-    OWNER = academy
-    ENCODING = 'UTF8'
-    CONNECTION LIMIT = -1;
+CREATE DATABASE IF NOT EXISTS task_library;
+USE task_library;
 
 DROP TABLE IF EXISTS cities;
 DROP TABLE IF EXISTS statuses;
@@ -103,11 +100,11 @@ CREATE TABLE tasks
     text TEXT,
     customer_id INTEGER NOT NULL,
     executor_id INTEGER,
-    category_id INTEGER,
+    category_id INTEGER NOT NULL,
     address TEXT,
     city_id INTEGER,
     longitude FLOAT,
-    latitude FLOAD,
+    latitude FLOAT,
     budget BIGINT,
     deadline DATE
 );
@@ -136,6 +133,7 @@ CREATE TABLE comments
 CREATE TABLE responses
 (
   id SERIAL PRIMARY KEY,
+  text TEXT,
   task_id INTEGER NOT NULL,
   user_id INTEGER NOT NULL,
   status_id INTEGER,
