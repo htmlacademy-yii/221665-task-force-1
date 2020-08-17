@@ -1,4 +1,5 @@
-CREATE DATABASE IF NOT EXISTS task_library;
+CREATE DATABASE IF NOT EXISTS task_library
+    CHARACTER SET utf8;
 USE task_library;
 
 DROP TABLE IF EXISTS cities;
@@ -19,27 +20,27 @@ DROP TABLE IF EXISTS users_categories;
 
 CREATE TABLE cities
 (
-  id SERIAL PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR (50) NOT NULL
 );
 
 CREATE TABLE statuses
 (
-  id SERIAL PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR (50) NOT NULL
 );
 
 CREATE TABLE categories
 (
-  id SERIAL PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR (50) NOT NULL
 );
 
 CREATE TABLE users
 (
-  id SERIAL PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR (50) NOT NULL,
-  city_id INTEGER,
+  city_id INT,
   avatar VARCHAR (50) NOT NULL,
   email VARCHAR (50) NOT NULL,
   phone VARCHAR (50) NOT NULL,
@@ -58,8 +59,8 @@ CREATE TABLE users
 
 CREATE TABLE favorites
 (
-    user_id INTEGER NOT NULL,
-    selected_user_id INTEGER NOT NULL,
+    user_id INT NOT NULL,
+    selected_user_id INT NOT NULL,
     CONSTRAINT favorites_pk PRIMARY KEY (user_id, selected_user_id),
     FOREIGN KEY (user_id) REFERENCES users (id)
         ON DELETE CASCADE
@@ -71,8 +72,8 @@ CREATE TABLE favorites
 
 CREATE TABLE users_categories
 (
-    user_id INTEGER NOT NULL,
-    category_id INTEGER NOT NULL,
+    user_id INT NOT NULL,
+    category_id INT NOT NULL,
     CONSTRAINT users_categories_pk PRIMARY KEY (user_id, category_id),
     FOREIGN KEY (user_id) REFERENCES users (id)
         ON DELETE CASCADE
@@ -84,8 +85,8 @@ CREATE TABLE users_categories
 
 CREATE TABLE photos
 (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER,
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
   photo_src VARCHAR (50) NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users (id)
 		ON DELETE CASCADE
@@ -94,15 +95,15 @@ CREATE TABLE photos
 
 CREATE TABLE tasks
 (
-    id SERIAL PRIMARY KEY,
-    status_id INTEGER NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    status_id INT NOT NULL,
     title VARCHAR(50) NOT NULL,
     text TEXT,
-    customer_id INTEGER NOT NULL,
-    executor_id INTEGER,
-    category_id INTEGER NOT NULL,
+    customer_id INT NOT NULL,
+    executor_id INT,
+    category_id INT NOT NULL,
     address TEXT,
-    city_id INTEGER,
+    city_id INT,
     longitude FLOAT,
     latitude FLOAT,
     budget BIGINT,
@@ -111,8 +112,8 @@ CREATE TABLE tasks
 
 CREATE TABLE files
 (
-  id SERIAL PRIMARY KEY,
-  task_id INTEGER,
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  task_id INT,
   file_src VARCHAR (50) NOT NULL,
   FOREIGN KEY (task_id) REFERENCES tasks (id)
 		ON DELETE CASCADE
@@ -121,10 +122,10 @@ CREATE TABLE files
 
 CREATE TABLE comments
 (
-  id SERIAL PRIMARY KEY,
-  task_id INTEGER,
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  task_id INT,
   text TEXT,
-  score INTEGER,
+  score INT,
   FOREIGN KEY (task_id) REFERENCES tasks (id)
 		ON DELETE CASCADE
 		ON UPDATE CASCADE
@@ -132,11 +133,11 @@ CREATE TABLE comments
 
 CREATE TABLE responses
 (
-  id SERIAL PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   text TEXT,
-  task_id INTEGER NOT NULL,
-  user_id INTEGER NOT NULL,
-  status_id INTEGER,
+  task_id INT NOT NULL,
+  user_id INT NOT NULL,
+  status_id INT,
   price BIGINT,
   FOREIGN KEY (status_id) REFERENCES statuses (id)
 		ON DELETE SET NULL
@@ -151,10 +152,10 @@ CREATE TABLE responses
 
 CREATE TABLE messages
 (
-  id SERIAL PRIMARY KEY,
-  task_id INTEGER NOT NULL,
-  user_id INTEGER NOT NULL,
-  status_id INTEGER,
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  task_id INT NOT NULL,
+  user_id INT NOT NULL,
+  status_id INT,
   timestamp TIMESTAMP,
   text TEXT,
   FOREIGN KEY (status_id) REFERENCES statuses (id)
