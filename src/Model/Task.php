@@ -105,4 +105,21 @@ class Task
         $this->status = $status;
     }
 
+//    проект методов класса
+
+    public function setResponse($response)
+    {
+        // регистрирует новый отклик к задаче
+    }
+
+    public function setStatus($status)
+    {
+        // устанавливает статус задачи
+    }
+
+    public function setExecutor($executor_id)
+    {
+        // устанавливает исполнителя задачи
+    }
+
 }
