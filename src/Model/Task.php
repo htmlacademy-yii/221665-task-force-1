@@ -3,6 +3,11 @@
 
 namespace TaskForce\Model;
 
+use TaskForce\Actions\CancelAction;
+use TaskForce\Actions\DoneAction;
+use TaskForce\Actions\FailAction;
+use TaskForce\Actions\ReplyAction;
+
 class Task
 {
     const STATUS_NEW = 'new';
@@ -44,13 +49,13 @@ class Task
 
     const action_map = [
         self::STATUS_NEW => [
-            self::EXECUTOR => self::ACTION_REPLY,
-            self::CUSTOMER => self::ACTION_CANCEL
+            self::EXECUTOR => ReplyAction::class,
+            self::CUSTOMER => CancelAction::class
         ],
         self::STATUS_CANCEL => null,
         self::STATUS_WORK => [
-            self::CUSTOMER => self::ACTION_DONE,
-            self::EXECUTOR => self::ACTION_FAIL
+            self::CUSTOMER => DoneAction::class,
+            self::EXECUTOR => FailAction::class
         ],
         self::STATUS_DONE => null,
         self::STATUS_FAIL => null,
@@ -92,6 +97,36 @@ class Task
     public static function getActionMap()
     {
         return self::STATUS_NAME;
+    }
+
+    public function getNextAction($user_id)
+    {
+        $next_actions = self::action_map[$this->status];
+        if (!$next_actions) {
+            return null;
+        }
+
+        foreach ($next_actions as $next_action) {
+            $action = new $next_action();
+            if ($action->isAllowed($this->customer_id, $this->executor_id, $user_id)) {
+                return $action->getSlug();
+            }
+        }
+    }
+
+    private function getUserTypeById($user_id)
+    {
+        switch($user_id) {
+            case $this->executor_id:
+                $type = self::EXECUTOR;
+                break;
+            case $this->customer_id:
+                $type = self::CUSTOMER;
+                break;
+            default:
+                $type = null;
+        }
+        return $type;
     }
 
     public $customer_id;
