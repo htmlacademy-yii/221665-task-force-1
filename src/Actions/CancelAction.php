@@ -23,9 +23,4 @@ class CancelAction extends AbstractAction
         return Task::ACTION_CANCEL;
     }
 
-    public static function getNextStatus(): string
-    {
-        return Task::STATUS_CANCEL;
-    }
-
 }

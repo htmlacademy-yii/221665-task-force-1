@@ -23,9 +23,4 @@ class FailAction extends AbstractAction
         return Task::ACTION_FAIL;
     }
 
-    public static function getNextStatus(): string
-    {
-        return Task::STATUS_FAIL;
-    }
-
 }

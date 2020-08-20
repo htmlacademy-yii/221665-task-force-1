@@ -23,9 +23,4 @@ class DoneAction extends AbstractAction
         return Task::ACTION_DONE;
     }
 
-    public static function getNextStatus(): string
-    {
-        return Task::STATUS_DONE;
-    }
-
 }

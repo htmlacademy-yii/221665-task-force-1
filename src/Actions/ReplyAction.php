@@ -24,10 +24,4 @@ class ReplyAction extends AbstractAction
         return Task::ACTION_REPLY;
     }
 
-    public static function getNextStatus(): string
-    {
-        return Task::STATUS_WORK;
-        // и тут что то у меня тупик со статусом, его должен поменять заказчик, выбрав исполнителя, но у нас такого действия нет
-    }
-
 }
