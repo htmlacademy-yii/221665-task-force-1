@@ -16,12 +16,6 @@ class Task
     const STATUS_DONE = 'done';
     const STATUS_FAIL = 'fail';
 
-
-    const ACTION_REPLY = 'reply';
-    const ACTION_CANCEL = 'cancel';
-    const ACTION_DONE = 'done';
-    const ACTION_FAIL = 'fail';
-
     const CUSTOMER = 'customer';
     const EXECUTOR = 'executor';
 
@@ -33,18 +27,11 @@ class Task
         self::STATUS_FAIL => 'Провалено',
     ];
 
-    const ACTION_NAME = [
-        self::ACTION_REPLY => 'Откликнуться',
-        self::ACTION_CANCEL => 'Отменить',
-        self::ACTION_DONE => 'Выполнено',
-        self::ACTION_FAIL => 'Отказаться',
-    ];
-
     const status_map = [
-        self::ACTION_REPLY => self::STATUS_WORK,
-        self::ACTION_CANCEL => self::STATUS_CANCEL,
-        self::ACTION_DONE => self::STATUS_DONE,
-        self::ACTION_FAIL => self::STATUS_FAIL,
+        ReplyAction::class => self::STATUS_WORK,
+        CancelAction::class => self::STATUS_CANCEL,
+        DoneAction::class => self::STATUS_DONE,
+        FailAction::class => self::STATUS_FAIL,
     ];
 
     const action_map = [
@@ -62,17 +49,17 @@ class Task
     ];
 
 
-    public function get_action($id)
+    public function getAction($id)
     {
         $next_actions = self::action_map[$this->status];
-        $user_status = $this->get_user_status($id);
+        $user_status = $this->getUserStatus($id);
         if ($next_actions && $user_status) {
             return $next_actions[$user_status];
         }
         return null;
     }
 
-    public function get_user_status($id)
+    public function getUserStatus($id)
     {
         if ($id === $this->customer_id) {
             return self::CUSTOMER;
@@ -84,49 +71,27 @@ class Task
         return null;
     }
 
-    public static function get_next_status($action)
+    public static function getNextStatus($action)
     {
         return self::status_map[$action];
     }
 
-    public static function getStatusMap()
-    {
-        return self::ACTION_NAME;
-    }
-
-    public static function getActionMap()
-    {
-        return self::STATUS_NAME;
-    }
-
-    public function getNextAction($user_id)
+    public function getAvailableActions($user_id)
     {
         $next_actions = self::action_map[$this->status];
         if (!$next_actions) {
             return null;
         }
 
-        foreach ($next_actions as $next_action) {
-            $action = new $next_action();
-            if ($action->isAllowed($this->customer_id, $this->executor_id, $user_id)) {
-                return $action->getSlug();
+        $available_actions = [];
+        foreach ($next_actions as $next_action){
+            $action = new $next_action;
+            if($action->isAllowed($this->customer_id, $this->executor_id, $user_id)) {
+                $available_actions[] = $action;
             }
         }
-    }
 
-    private function getUserTypeById($user_id)
-    {
-        switch($user_id) {
-            case $this->executor_id:
-                $type = self::EXECUTOR;
-                break;
-            case $this->customer_id:
-                $type = self::CUSTOMER;
-                break;
-            default:
-                $type = null;
-        }
-        return $type;
+        return $available_actions;
     }
 
     public $customer_id;

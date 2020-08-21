@@ -1,11 +1,16 @@
 <?php
 require('../vendor/autoload.php');
 use TaskForce\Model\Task;
+use TaskForce\Actions\CancelAction;
 
 $task = new Task(Task::STATUS_NEW,1);
+$cancel_action = new CancelAction;
+
 assert($task->customer_id == 1, 'хранит id заказчика');
-assert($task->get_action(1) == Task::ACTION_CANCEL, 'возвращает действие');
-assert(Task::ACTION_NAME[$task->get_action(1)] == 'Отменить', 'называет действие');
-assert(Task::get_next_status($task->get_action(1)) == Task::STATUS_CANCEL, 'возвращает следующий статус');
+assert($task->getAction(1) == CancelAction::class, 'возвращает действие');
+assert($task::status_map[CancelAction::class] == $task::STATUS_CANCEL, 'возвращает статус');
+assert($cancel_action->getName() == 'Отменить', 'называет действие');
+assert(Task::getNextStatus(CancelAction::class) == Task::STATUS_CANCEL, 'возвращает следующий статус');
+assert($task->getAvailableActions(1) == [new CancelAction], 'возвращает доступные действия');
 
 echo 'done';

@@ -3,24 +3,21 @@
 
 namespace TaskForce\Actions;
 
-use TaskForce\Model\Task;
-
-
 class CancelAction extends AbstractAction
 {
     public function isAllowed($customer_id, $executor_id, $user_id): bool
     {
-        return $executor_id === $user_id;
+        return $customer_id === $user_id;
     }
 
     public static function getName(): string
     {
-        return Task::ACTION_NAME[Task::ACTION_CANCEL];
+        return 'Отменить';
     }
 
     public static function getSlug(): string
     {
-        return Task::ACTION_CANCEL;
+        return 'cancel';
     }
 
 }

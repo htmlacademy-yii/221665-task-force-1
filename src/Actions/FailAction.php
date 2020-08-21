@@ -3,9 +3,6 @@
 
 namespace TaskForce\Actions;
 
-use TaskForce\Model\Task;
-
-
 class FailAction extends AbstractAction
 {
     public function isAllowed($customer_id, $executor_id, $user_id): bool
@@ -15,12 +12,12 @@ class FailAction extends AbstractAction
 
     public static function getName(): string
     {
-        return Task::ACTION_NAME[Task::ACTION_FAIL];
+        return 'Отказаться';
     }
 
     public static function getSlug(): string
     {
-        return Task::ACTION_FAIL;
+        return 'fail';
     }
 
 }
