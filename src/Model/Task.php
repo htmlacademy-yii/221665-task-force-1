@@ -3,6 +3,11 @@
 
 namespace TaskForce\Model;
 
+use TaskForce\Actions\CancelAction;
+use TaskForce\Actions\DoneAction;
+use TaskForce\Actions\FailAction;
+use TaskForce\Actions\ReplyAction;
+
 class Task
 {
     const STATUS_NEW = 'new';
@@ -10,12 +15,6 @@ class Task
     const STATUS_WORK = 'work';
     const STATUS_DONE = 'done';
     const STATUS_FAIL = 'fail';
-
-
-    const ACTION_REPLY = 'reply';
-    const ACTION_CANCEL = 'cancel';
-    const ACTION_DONE = 'done';
-    const ACTION_FAIL = 'fail';
 
     const CUSTOMER = 'customer';
     const EXECUTOR = 'executor';
@@ -28,46 +27,39 @@ class Task
         self::STATUS_FAIL => 'Провалено',
     ];
 
-    const ACTION_NAME = [
-        self::ACTION_REPLY => 'Откликнуться',
-        self::ACTION_CANCEL => 'Отменить',
-        self::ACTION_DONE => 'Выполнено',
-        self::ACTION_FAIL => 'Отказаться',
-    ];
-
     const status_map = [
-        self::ACTION_REPLY => self::STATUS_WORK,
-        self::ACTION_CANCEL => self::STATUS_CANCEL,
-        self::ACTION_DONE => self::STATUS_DONE,
-        self::ACTION_FAIL => self::STATUS_FAIL,
+        ReplyAction::class => self::STATUS_WORK,
+        CancelAction::class => self::STATUS_CANCEL,
+        DoneAction::class => self::STATUS_DONE,
+        FailAction::class => self::STATUS_FAIL,
     ];
 
     const action_map = [
         self::STATUS_NEW => [
-            self::EXECUTOR => self::ACTION_REPLY,
-            self::CUSTOMER => self::ACTION_CANCEL
+            self::EXECUTOR => ReplyAction::class,
+            self::CUSTOMER => CancelAction::class
         ],
         self::STATUS_CANCEL => null,
         self::STATUS_WORK => [
-            self::CUSTOMER => self::ACTION_DONE,
-            self::EXECUTOR => self::ACTION_FAIL
+            self::CUSTOMER => DoneAction::class,
+            self::EXECUTOR => FailAction::class
         ],
         self::STATUS_DONE => null,
         self::STATUS_FAIL => null,
     ];
 
 
-    public function get_action($id)
+    public function getAction($id)
     {
         $next_actions = self::action_map[$this->status];
-        $user_status = $this->get_user_status($id);
+        $user_status = $this->getUserStatus($id);
         if ($next_actions && $user_status) {
             return $next_actions[$user_status];
         }
         return null;
     }
 
-    public function get_user_status($id)
+    public function getUserStatus($id)
     {
         if ($id === $this->customer_id) {
             return self::CUSTOMER;
@@ -79,19 +71,27 @@ class Task
         return null;
     }
 
-    public static function get_next_status($action)
+    public static function getNextStatus($action)
     {
         return self::status_map[$action];
     }
 
-    public static function getStatusMap()
+    public function getAvailableActions($user_id)
     {
-        return self::ACTION_NAME;
-    }
+        $next_actions = self::action_map[$this->status];
+        if (!$next_actions) {
+            return null;
+        }
 
-    public static function getActionMap()
-    {
-        return self::STATUS_NAME;
+        $available_actions = [];
+        foreach ($next_actions as $next_action){
+            $action = new $next_action;
+            if($action->isAllowed($this->customer_id, $this->executor_id, $user_id)) {
+                $available_actions[] = $action;
+            }
+        }
+
+        return $available_actions;
     }
 
     public $customer_id;
