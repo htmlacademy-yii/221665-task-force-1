@@ -1,10 +1,10 @@
 <?php
 
 
-namespace TaskForce;
+namespace TaskForce\Exception;
 
 
-class TaskException
+class TaskException extends \Exception
 {
 
 }

@@ -8,6 +8,8 @@ use TaskForce\Actions\DoneAction;
 use TaskForce\Actions\FailAction;
 use TaskForce\Actions\ReplyAction;
 
+use TaskForce\Exception\TaskException;
+
 class Task
 {
     const STATUS_NEW = 'new';
@@ -102,6 +104,9 @@ class Task
     {
         $this->customer_id = $customer_id;
         $this->executor_id = $executor_id; // для новой задачи нам еще не известен исполнитель
+        if (!self::STATUS_NAME[$status]) {
+            throw new TaskException('invalid status');
+        }
         $this->status = $status;
     }
 
