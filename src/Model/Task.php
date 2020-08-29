@@ -7,6 +7,7 @@ use TaskForce\Actions\CancelAction;
 use TaskForce\Actions\DoneAction;
 use TaskForce\Actions\FailAction;
 use TaskForce\Actions\ReplyAction;
+use TaskForce\Actions\AbstractAction;
 
 use TaskForce\Exception\TaskException;
 
@@ -51,7 +52,7 @@ class Task
     ];
 
 
-    public function getAction($id)
+    public function getAction(int $id):?AbstractAction
     {
         $next_actions = self::action_map[$this->status];
         $user_status = $this->getUserStatus($id);
@@ -61,7 +62,7 @@ class Task
         return null;
     }
 
-    public function getUserStatus($id)
+    public function getUserStatus(int $id):?string
     {
         if ($id === $this->customer_id) {
             return self::CUSTOMER;
@@ -73,12 +74,15 @@ class Task
         return null;
     }
 
-    public static function getNextStatus($action)
+    public static function getNextStatus(AbstractAction $action):string
     {
+        if (!array_key_exists($action, self::status_map)) {
+            throw new TaskException('invalid action');
+        }
         return self::status_map[$action];
     }
 
-    public function getAvailableActions($user_id)
+    public function getAvailableActions(string $user_id):?array
     {
         $next_actions = self::action_map[$this->status];
         if (!$next_actions) {
@@ -96,11 +100,11 @@ class Task
         return $available_actions;
     }
 
-    public $customer_id;
-    public $executor_id;
-    private $status;
+    public int $customer_id;
+    public ?int $executor_id;
+    private string $status;
 
-    public function __construct($status, $customer_id, $executor_id = null)
+    public function __construct(string $status, int $customer_id, ?int $executor_id = null)
     {
         $this->customer_id = $customer_id;
         $this->executor_id = $executor_id; // для новой задачи нам еще не известен исполнитель
@@ -112,19 +116,31 @@ class Task
 
 //    проект методов класса
 
-    public function setResponse($response)
+    public function setResponse($response):void
     {
         // регистрирует новый отклик к задаче
     }
 
-    public function setStatus($status)
+    public function setStatus(string $status):void
     {
-        // устанавливает статус задачи
+        if (!self::STATUS_NAME[$status]) {
+            throw new TaskException('invalid status');
+        }
+
+        $this->status = $status;
     }
 
-    public function setExecutor($executor_id)
+    public function setExecutor(int $executor_id):void
     {
-        // устанавливает исполнителя задачи
+        if ($this->$executor_id) {
+            throw new TaskException('executor is already set');
+        }
+
+        if ($executor_id === $this->customer_id) {
+            throw new TaskException('invalid user id');
+        }
+
+        $this->executor_id = $executor_id;
     }
 
 }
