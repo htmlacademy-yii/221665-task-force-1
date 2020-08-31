@@ -7,7 +7,6 @@ use TaskForce\Actions\CancelAction;
 use TaskForce\Actions\DoneAction;
 use TaskForce\Actions\FailAction;
 use TaskForce\Actions\ReplyAction;
-use TaskForce\Actions\AbstractAction;
 
 use TaskForce\Exception\TaskException;
 
@@ -52,7 +51,7 @@ class Task
     ];
 
 
-    public function getAction(int $id):?AbstractAction
+    public function getAction(int $id):?string
     {
         $next_actions = self::action_map[$this->status];
         $user_status = $this->getUserStatus($id);
@@ -74,7 +73,7 @@ class Task
         return null;
     }
 
-    public static function getNextStatus(AbstractAction $action):string
+    public static function getNextStatus(string $action):string
     {
         if (!array_key_exists($action, self::status_map)) {
             throw new TaskException('invalid action');
@@ -82,7 +81,7 @@ class Task
         return self::status_map[$action];
     }
 
-    public function getAvailableActions(string $user_id):?array
+    public function getAvailableActions(int $user_id):?array
     {
         $next_actions = self::action_map[$this->status];
         if (!$next_actions) {
