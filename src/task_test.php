@@ -1,9 +1,17 @@
 <?php
 require('../vendor/autoload.php');
+
 use TaskForce\Model\Task;
 use TaskForce\Actions\CancelAction;
 
-$task = new Task(Task::STATUS_NEW,1);
+use TaskForce\Fixtures\CsvParser;
+
+try {
+    $task = new Task(Task::STATUS_NEW, 1);
+} catch (\TaskForce\Exception\TaskException $e) {
+    echo 'Ошибка создания задачи';
+}
+
 $cancel_action = new CancelAction;
 
 assert($task->customer_id == 1, 'хранит id заказчика');
@@ -13,4 +21,11 @@ assert($cancel_action->getName() == 'Отменить', 'называет дей
 assert(Task::getNextStatus(CancelAction::class) == Task::STATUS_CANCEL, 'возвращает следующий статус');
 assert($task->getAvailableActions(1) == [$cancel_action], 'возвращает доступные действия');
 
+$categories = new CsvParser('../data/categories.csv', ['name' => 'title', 'icon' => 'icon']);
+try {
+    $categories->import();
+} catch (\Exception $e) {
+    echo $e;
+}
+print $categories->getSQL('categories');
 echo 'done';
