@@ -22,7 +22,7 @@ class CsvParser
         try {
             $this->fp = new SplFileObject($this->filename);
         } catch (\Throwable $e) {
-            throw new \Exception("Не удалось открыть файл на чтение");
+            throw new \Exception("Не удалось открыть файл $this->filename на чтение");
         }
 
         $this->fp->setFlags(SplFileObject::SKIP_EMPTY | SplFileObject::DROP_NEW_LINE);
@@ -30,7 +30,7 @@ class CsvParser
         $headers = $this->getHeaderData();
 
         if (!$this->validateColumns($headers)) {
-            throw new \Exception("Заданы неверные заголовки столбцов");
+            throw new \Exception("Заданы неверные заголовки столбцов для $this->filename");
         }
 
         foreach ($this->getNextLine() as $line) {
@@ -45,13 +45,19 @@ class CsvParser
         return $this->result;
     }
 
+    public function addData($field, $cb): void
+    {
+        $this->columns[$field] = $field;
+        $this->result = array_map(fn ($it) => array_merge($it, [$field => $cb($it)]), $this->result);
+    }
+
     public function getSQL(string $table): string
     {
         $fields = implode(', ', $this->columns);
         $insertStmt = 'INSERT INTO '.$table.' ('.$fields.') VALUES ';
         $rowsToInsert = array();
         foreach ($this->result as $row) {
-            $rowsToInsert[] = '("' . implode('", "', $row) . '")';
+            $rowsToInsert[] = '("' . implode('", "', array_map(fn ($it) => $row[$it], array_keys($this->columns))) . '")';
         }
         return $insertStmt . implode(', ', $rowsToInsert);
     }
