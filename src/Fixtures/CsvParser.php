@@ -57,9 +57,9 @@ class CsvParser
         $insertStmt = 'INSERT INTO '.$table.' ('.$fields.') VALUES ';
         $rowsToInsert = array();
         foreach ($this->result as $row) {
-            $rowsToInsert[] = '("' . implode('", "', array_map(fn ($it) => $row[$it], array_keys($this->columns))) . '")';
+            $rowsToInsert[] = '("' . implode('", "', array_map(fn ($it) => $row[$it], array_keys($this->columns))) . '")'.PHP_EOL;
         }
-        return $insertStmt . implode(', ', $rowsToInsert);
+        return $insertStmt . implode(', ', $rowsToInsert).';';
     }
 
     private function getHeaderData(): ?array
