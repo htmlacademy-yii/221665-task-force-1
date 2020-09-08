@@ -2,21 +2,20 @@ CREATE DATABASE IF NOT EXISTS task_library
     CHARACTER SET utf8;
 USE task_library;
 
-DROP TABLE IF EXISTS cities;
-DROP TABLE IF EXISTS statuses;
-DROP TABLE IF EXISTS categories;
-
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS tasks;
-
-DROP TABLE IF EXISTS responses;
-DROP TABLE IF EXISTS comments;
-DROP TABLE IF EXISTS messages;
-
 DROP TABLE IF EXISTS files;
 DROP TABLE IF EXISTS photos;
 DROP TABLE IF EXISTS favorites;
 DROP TABLE IF EXISTS users_categories;
+DROP TABLE IF EXISTS comments;
+DROP TABLE IF EXISTS responses;
+DROP TABLE IF EXISTS messages;
+
+DROP TABLE IF EXISTS tasks;
+DROP TABLE IF EXISTS users;
+
+DROP TABLE IF EXISTS cities;
+DROP TABLE IF EXISTS statuses;
+DROP TABLE IF EXISTS categories;
 
 CREATE TABLE cities
 (
@@ -33,7 +32,8 @@ CREATE TABLE statuses
 CREATE TABLE categories
 (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  title VARCHAR (50) NOT NULL
+  title VARCHAR (50) NOT NULL,
+  icon VARCHAR (50) NOT NULL
 );
 
 CREATE TABLE users
@@ -41,9 +41,9 @@ CREATE TABLE users
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR (50) NOT NULL,
   city_id INT,
-  avatar VARCHAR (50) NOT NULL,
+  avatar VARCHAR (50),
   email VARCHAR (50) NOT NULL,
-  phone VARCHAR (50) NOT NULL,
+  phone VARCHAR (50),
   skype VARCHAR (50),
   telegram VARCHAR (50),
   birthday DATE,
