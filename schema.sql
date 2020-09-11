@@ -47,7 +47,7 @@ CREATE TABLE users
   skype VARCHAR (50),
   telegram VARCHAR (50),
   birthday DATE,
-  password VARCHAR (50) NOT NULL,
+  password VARCHAR (256) NOT NULL,
   about TEXT,
   popularity BIGINT,
   activity DATETIME,
