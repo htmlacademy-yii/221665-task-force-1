@@ -25,6 +25,11 @@ use Yii;
  * @property Files[] $files
  * @property Messages[] $messages
  * @property Responses[] $responses
+ * @property Statuses $status
+ * @property Users $customer
+ * @property Users $executor
+ * @property Categories $category
+ * @property Cities $city
  */
 class Tasks extends \yii\db\ActiveRecord
 {
@@ -48,6 +53,11 @@ class Tasks extends \yii\db\ActiveRecord
             [['longitude', 'latitude'], 'number'],
             [['deadline'], 'safe'],
             [['title'], 'string', 'max' => 50],
+            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Statuses::className(), 'targetAttribute' => ['status_id' => 'id']],
+            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['customer_id' => 'id']],
+            [['executor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['executor_id' => 'id']],
+            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['category_id' => 'id']],
+            [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cities::className(), 'targetAttribute' => ['city_id' => 'id']],
         ];
     }
 
@@ -111,6 +121,56 @@ class Tasks extends \yii\db\ActiveRecord
     public function getResponses()
     {
         return $this->hasMany(Responses::className(), ['task_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Status]].
+     *
+     * @return \yii\db\ActiveQuery|StatusesQuery
+     */
+    public function getStatus()
+    {
+        return $this->hasOne(Statuses::className(), ['id' => 'status_id']);
+    }
+
+    /**
+     * Gets query for [[Customer]].
+     *
+     * @return \yii\db\ActiveQuery|UsersQuery
+     */
+    public function getCustomer()
+    {
+        return $this->hasOne(Users::className(), ['id' => 'customer_id']);
+    }
+
+    /**
+     * Gets query for [[Executor]].
+     *
+     * @return \yii\db\ActiveQuery|UsersQuery
+     */
+    public function getExecutor()
+    {
+        return $this->hasOne(Users::className(), ['id' => 'executor_id']);
+    }
+
+    /**
+     * Gets query for [[Category]].
+     *
+     * @return \yii\db\ActiveQuery|CategoriesQuery
+     */
+    public function getCategory()
+    {
+        return $this->hasOne(Categories::className(), ['id' => 'category_id']);
+    }
+
+    /**
+     * Gets query for [[City]].
+     *
+     * @return \yii\db\ActiveQuery|CitiesQuery
+     */
+    public function getCity()
+    {
+        return $this->hasOne(Cities::className(), ['id' => 'city_id']);
     }
 
     /**
