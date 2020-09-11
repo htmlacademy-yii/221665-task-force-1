@@ -54,7 +54,7 @@ class Users extends \yii\db\ActiveRecord
             [['birthday', 'activity'], 'safe'],
             [['about'], 'string'],
             [['name', 'avatar', 'email', 'phone', 'skype', 'telegram', 'password'], 'string', 'max' => 50],
-            [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cities::className(), 'targetAttribute' => ['city_id' => 'id']],
+            [['city_id'], 'exist', 'skipOnError' => false, 'targetClass' => Cities::className(), 'targetAttribute' => ['city_id' => 'id']],
         ];
     }
 
