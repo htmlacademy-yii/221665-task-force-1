@@ -2,33 +2,33 @@
 
 return [
     'cities0' => [
-        'title' => 'Одинцово',
+        'title' => 'Кашира',
     ],
     'cities1' => [
-        'title' => 'Мытищи',
-    ],
-    'cities2' => [
-        'title' => 'Орехово-Зуево',
-    ],
-    'cities3' => [
-        'title' => 'Озёры',
-    ],
-    'cities4' => [
-        'title' => 'Ногинск',
-    ],
-    'cities5' => [
-        'title' => 'Шатура',
-    ],
-    'cities6' => [
-        'title' => 'Раменское',
-    ],
-    'cities7' => [
-        'title' => 'Егорьевск',
-    ],
-    'cities8' => [
         'title' => 'Домодедово',
     ],
-    'cities9' => [
+    'cities2' => [
+        'title' => 'Видное',
+    ],
+    'cities3' => [
+        'title' => 'Шатура',
+    ],
+    'cities4' => [
+        'title' => 'Егорьевск',
+    ],
+    'cities5' => [
+        'title' => 'Орехово-Зуево',
+    ],
+    'cities6' => [
+        'title' => 'Мытищи',
+    ],
+    'cities7' => [
+        'title' => 'Истра',
+    ],
+    'cities8' => [
         'title' => 'Луховицы',
+    ],
+    'cities9' => [
+        'title' => 'Серпухов',
     ],
 ];
