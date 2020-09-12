@@ -3,7 +3,7 @@
 namespace frontend\tests\functional;
 
 use frontend\tests\FunctionalTester;
-use common\fixtures\UserFixture;
+use common\fixtures\UsersFixture;
 
 class LoginCest
 {
@@ -18,7 +18,7 @@ class LoginCest
     {
         return [
             'user' => [
-                'class' => UserFixture::className(),
+                'class' => UsersFixture::className(),
                 'dataFile' => codecept_data_dir() . 'login_data.php',
             ],
         ];

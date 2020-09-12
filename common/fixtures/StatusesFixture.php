@@ -1,0 +1,9 @@
+<?php
+namespace common\fixtures;
+
+use yii\test\ActiveFixture;
+
+class StatusesFixture extends ActiveFixture
+{
+    public $modelClass = 'frontend\models\Statuses';
+}

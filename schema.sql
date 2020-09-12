@@ -47,7 +47,7 @@ CREATE TABLE users
   skype VARCHAR (50),
   telegram VARCHAR (50),
   birthday DATE,
-  password VARCHAR (50) NOT NULL,
+  password VARCHAR (256) NOT NULL,
   about TEXT,
   popularity BIGINT,
   activity DATETIME,
@@ -107,7 +107,22 @@ CREATE TABLE tasks
     longitude FLOAT,
     latitude FLOAT,
     budget BIGINT,
-    deadline DATE
+    deadline DATE,
+    FOREIGN KEY (status_id) REFERENCES statuses (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (customer_id) REFERENCES users (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (executor_id) REFERENCES users (id)
+        ON DELETE SET NULL
+        ON UPDATE SET NULL,
+    FOREIGN KEY (category_id) REFERENCES categories (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (city_id) REFERENCES cities (id)
+        ON DELETE SET NULL
+        ON UPDATE SET NULL
 );
 
 CREATE TABLE files
