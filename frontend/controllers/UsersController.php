@@ -8,7 +8,8 @@ class UsersController extends \yii\web\Controller
 {
     public function actionIndex()
     {
-        return $this->render('index');
+        $users = Users::find()->all();
+        return $this->render('index', ['users' => $users]);
     }
 
 }

@@ -8,7 +8,8 @@ class TasksController extends \yii\web\Controller
 {
     public function actionIndex()
     {
-        return $this->render('index');
+        $tasks = Tasks::find()->where(['status_id' => '1'])->joinWith(['customer', 'category', 'city'])->all();
+        return $this->render('index', ['tasks' => $tasks]);
     }
 
 }

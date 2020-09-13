@@ -1,5 +1,6 @@
 <?php
 /* @var $this yii\web\View */
+/* @var $users array */
 ?>
 <section class="user__search">
     <div class="user__search-link">
@@ -16,81 +17,41 @@
             </li>
         </ul>
     </div>
+    <?php foreach ($users as $user): ?>
     <div class="content-view__feedback-card user__search-wrapper">
         <div class="feedback-card__top">
             <div class="user__search-icon">
-                <a href="#"><img src="./img/man-glasses.jpg" width="65" height="65"></a>
-                <span>17 заданий</span>
-                <span>6 отзывов</span>
+                <a href="#"><img src="./img/<?= $user->avatar ?>" width="65" height="65"></a>
+                <span><?= msgfmt_format_message(
+                        'ru_RU',
+                        '{0, plural, =0{нет заданий}one{# задание}few{# задания}many{# заданий}other{всего #}}',
+                        [count($user->tasks)]
+                    ) ?></span>
+                <span><?= msgfmt_format_message(
+                        'ru_RU',
+                        '{0, plural, =0{нет откликов}one{# отклик}few{# отклика}many{# откликов}other{всего #}}',
+                        [count($user->responses)]
+                    ) ?></span>
             </div>
             <div class="feedback-card__top--name user__search-card">
-                <p class="link-name"><a href="#" class="link-regular">Астахов Павел</a></p>
-                <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
-                <b>4.25</b>
+                <p class="link-name"><a href="#" class="link-regular"><?= $user->name ?></a></p>
+                <?php for ($i = 0; $i < 5; $i++): ?><span <?= $i < floor($user->score) ? '':'class="star-disabled"'?>></span><?php endfor;?>
+                <b>
+                <?= $user->score ?>
+                </b>
                 <p class="user__search-content">
-                    Сложно сказать, почему элементы политического процесса лишь
-                    добавляют фракционных разногласий и рассмотрены исключительно
-                    в разрезе маркетинговых и финансовых предпосылок.
+                    <?= $user->about ?>
                 </p>
             </div>
-            <span class="new-task__time">Был на сайте 25 минут назад</span>
+            <span class="new-task__time">Был на сайте <?= Yii::$app->formatter->asRelativeTime($user->activity); ?></span>
         </div>
         <div class="link-specialization user__search-link--bottom">
-            <a href="#" class="link-regular">Ремонт</a>
-            <a href="#" class="link-regular">Курьер</a>
-            <a href="#" class="link-regular">Оператор ПК</a>
+            <?php foreach ($user->categories as $category): ?>
+            <a href="#" class="link-regular"><?= $category->title?></a>
+            <?php endforeach;?>
         </div>
     </div>
-    <div class="content-view__feedback-card user__search-wrapper">
-        <div class="feedback-card__top">
-            <div class="user__search-icon">
-                <a href="#"><img src="./img/user-man2.jpg" width="65" height="65"></a>
-                <span>6 заданий</span>
-                <span>3 отзывов</span>
-            </div>
-            <div class="feedback-card__top--name user__search-card">
-                <p class="link-name"><a href="#" class="link-regular">Миронов Алексей</a></p>
-                <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
-                <b>4.25</b>
-                <p class="user__search-content">
-                    Как принято считать, акционеры крупнейших компаний формируют глобальную
-                    экономическую сеть и при этом - рассмотрены исключительно в разрезе
-                    маркетинговых и финансовых предпосылок
-                </p>
-            </div>
-            <span class="new-task__time">Был на сайте час назад</span>
-        </div>
-        <div class="link-specialization user__search-link--bottom">
-            <a href="#" class="link-regular">Ремонт</a>
-            <a href="#" class="link-regular">Курьер</a>
-            <a href="#" class="link-regular">Оператор ПК</a>
-        </div>
-    </div>
-    <div class="content-view__feedback-card user__search-wrapper">
-        <div class="feedback-card__top">
-            <div class="user__search-icon">
-                <a href="#"><img src="./img/user-man.jpg" width="65" height="65"></a>
-                <span>2 заданий</span>
-                <span>1 отзывов</span>
-            </div>
-            <div class="feedback-card__top--name user__search-card">
-                <p class="link-name"><a href="#" class="link-regular">Крючков Василий</a></p>
-                <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
-                <b>4.25</b>
-                <p class="user__search-content">
-                    Разнообразный и богатый опыт говорит нам, что существующая теория способствует
-                    подготовке и реализации форм воздействия. Безусловно, укрепление и развитие
-                    внутренней структуры представляет собой интересный эксперимент
-                </p>
-            </div>
-            <span class="new-task__time">Был на сайте минуту назад</span>
-        </div>
-        <div class="link-specialization user__search-link--bottom">
-            <a href="#" class="link-regular">Ремонт</a>
-            <a href="#" class="link-regular">Курьер</a>
-            <a href="#" class="link-regular">Оператор ПК</a>
-        </div>
-    </div>
+    <?php endforeach;?>
 </section>
 <section  class="search-task">
     <div class="search-task__wrapper">
