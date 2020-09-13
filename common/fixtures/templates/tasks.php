@@ -15,5 +15,6 @@ return [
     'longitude' =>$faker->longitude,
     'latitude' =>$faker->latitude,
     'budget' => $faker->numberBetween(1000, 10000),
-    'deadline' => $faker->date,
+    'deadline' => $faker->dateTimeBetween('10 days', '20 days')->format('Y-m-d H:m'),
+    'created' => $faker->dateTimeBetween('-10 days')->format('Y-m-d H:m'),
 ];
