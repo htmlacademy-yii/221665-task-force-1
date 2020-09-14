@@ -1,6 +1,7 @@
 <?php
 /* @var $this yii\web\View */
 /* @var $users array */
+use TaskForce\Helper\Stars;
 ?>
 <section class="user__search">
     <div class="user__search-link">
@@ -35,12 +36,12 @@
             </div>
             <div class="feedback-card__top--name user__search-card">
                 <p class="link-name"><a href="#" class="link-regular"><?= $user->name ?></a></p>
-                <?php for ($i = 0; $i < 5; $i++): ?><span <?= $i < floor($user->score) ? '':'class="star-disabled"'?>></span><?php endfor;?>
+                <?= Stars::render($user->score)?>
                 <b>
                 <?= $user->score ?>
                 </b>
                 <p class="user__search-content">
-                    <?= $user->about ?>
+                    <?= strip_tags($user->about) ?>
                 </p>
             </div>
             <span class="new-task__time">Был на сайте <?= Yii::$app->formatter->asRelativeTime($user->activity); ?></span>
