@@ -11,7 +11,7 @@ return [
         'password' => '$2y$13$BXaXgmEFde5rhPde/DMppO0CW5SiYsusp7Ijz7iiX7ekY7F1RYqh2',
         'about' => 'Cupiditate asperiores hic dolorem distinctio et ullam ratione eos nemo.',
         'popularity' => 70,
-        'activity' => '1972-04-17 02:22:16',
+        'activity' => '2020-04-17 02:22:16',
         'birthday' => '2011-08-16',
     ],
     'users1' => [
@@ -24,7 +24,7 @@ return [
         'password' => '$2y$13$vVatpRaRvfthauk4px73QecD53EzrQBmA8XWvQWXYcMsduNooxROe',
         'about' => 'Quaerat id similique ullam consequatur corporis.',
         'popularity' => 87,
-        'activity' => '1978-09-13 09:57:38',
+        'activity' => '2020-09-13 09:57:38',
         'birthday' => '2020-05-01',
     ],
     'users2' => [

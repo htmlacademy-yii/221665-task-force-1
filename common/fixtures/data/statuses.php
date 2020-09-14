@@ -2,12 +2,18 @@
 
 return [
     'statuses0' => [
-        'title' => 'aspernatur',
+        'title' => 'Новое',
     ],
     'statuses1' => [
-        'title' => 'qui',
+        'title' => 'Отменено',
     ],
     'statuses2' => [
-        'title' => 'unde',
+        'title' => 'В работе',
+    ],
+    'statuses3' => [
+        'title' => 'Выполнено',
+    ],
+    'statuses4' => [
+        'title' => 'Провалено',
     ],
 ];

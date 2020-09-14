@@ -143,6 +143,36 @@ class Users extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Tasks]].
+     *
+     * @return \yii\db\ActiveQuery|TasksQuery
+     */
+    public function getTasks()
+    {
+        return $this->hasMany(Tasks::className(), ['executor_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Comments]].
+     *
+     * @return \yii\db\ActiveQuery|CommentsQuery
+     */
+    public function getComments()
+    {
+        return $this->hasMany(Comments::className(), ['task_id' => 'id'])->via('tasks');
+    }
+
+    /**
+     * Gets score.
+     *
+     * @return float
+     */
+    public function getScore()
+    {
+        return count($this->comments) ? array_reduce($this->comments, fn ($sum, $it) => $sum + $it->score, 0) / count($this->comments) : 0;
+    }
+
+    /**
      * Gets query for [[Responses]].
      *
      * @return \yii\db\ActiveQuery|ResponsesQuery

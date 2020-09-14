@@ -2,23 +2,35 @@
 
 return [
     'categories0' => [
-        'title' => 'qui',
-        'icon' => 'dicta',
+        'title' => 'Переводы',
+        'icon' => 'translation',
     ],
     'categories1' => [
-        'title' => 'est',
-        'icon' => 'sunt',
+        'title' => 'Уборка',
+        'icon' => 'clean',
     ],
     'categories2' => [
-        'title' => 'id',
-        'icon' => 'laboriosam',
+        'title' => 'Переезды',
+        'icon' => 'cargo',
     ],
     'categories3' => [
-        'title' => 'enim',
-        'icon' => 'nemo',
+        'title' => 'Компьютерная помощь',
+        'icon' => 'neo',
     ],
     'categories4' => [
-        'title' => 'voluptas',
-        'icon' => 'blanditiis',
+        'title' => 'Ремонт квартирный',
+        'icon' => 'flat',
+    ],
+    'categories5' => [
+        'title' => 'Ремонт техники',
+        'icon' => 'repair',
+    ],
+    'categories6' => [
+        'title' => 'Красота',
+        'icon' => 'beauty',
+    ],
+    'categories7' => [
+        'title' => 'Фото',
+        'icon' => 'photo',
     ],
 ];
