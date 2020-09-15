@@ -14,9 +14,10 @@ return [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
-                'tasks/<id>' => 'tasks/show'
+                'tasks' => 'tasks/index',
+                'users' => 'users/index',
             ],
         ],
     ],
-
+    'language' => 'ru-RU',
 ];
