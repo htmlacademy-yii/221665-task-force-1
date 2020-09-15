@@ -12,4 +12,10 @@ class TasksController extends \yii\web\Controller
         return $this->render('index', ['tasks' => $tasks]);
     }
 
+    public function actionShow($id)
+    {
+
+        return $this->render('index', ['tasks' => []]);
+    }
+
 }
