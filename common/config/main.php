@@ -14,8 +14,9 @@ return [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
-                'tasks' => 'tasks/index',
-                'users' => 'users/index',
+//                'tasks' => 'tasks/index',
+//                'users' => 'users/index',
+                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>'
             ],
         ],
     ],

@@ -49,21 +49,17 @@ $this->title = 'Task Force';
         ]); ?>
         <fieldset class="search-task__categories">
             <legend>Категории</legend>
-            <?= $form->field($model, 'categories[]')->checkboxList($model->getCategories(),
-                ['itemOptions' => ['class' => 'visually-hidden checkbox__input'],]
-            ) ?>
+            <?= $form->field($model, 'categories')->checkboxList($model->getCategories()) ?>
         </fieldset>
         <fieldset class="search-task__categories">
             <legend>Дополнительно</legend>
-            <?= $form->field($model, 'withoutResponse')->checkbox(['class' => 'visually-hidden checkbox__input'], false)?>
-            <?= $form->field($model, 'remote')->checkbox(['class' => 'visually-hidden checkbox__input'], false)?>
+            <?= $form->field($model, 'withoutResponse')->checkbox()?>
+            <?= $form->field($model, 'remote')->checkbox()?>
         </fieldset>
         <label class="search-task__name" for="8">Период</label>
-        <select class="multiple-select input" id="8" size="1" name="time[]">
-            <option value="day">За день</option>
-            <option selected value="week">За неделю</option>
-            <option value="month">За месяц</option>
-        </select>
+        <?= $form->field($model, 'period')->dropdownList($model->getPeriodLabels(),
+            ['class' => 'input multiple-select']
+        ); ?>
         <?= $form->field($model, 'searchText')->textInput( ['class' => 'input-middle input', 'type' => 'search']) ?>
         <button class="button" type="submit">Искать</button>
         <?php ActiveForm::end(); ?>

@@ -62,9 +62,27 @@ class TaskForm extends Model
                 ->andWhere('r.task_id is null');
         }
 
+        if ($this->period) {
+            $date = (new \DateTime())->sub(\DateInterval::createFromDateString($this->getInterval($this->period)))
+                ->format('Y-m-d H:m');
+            $tasks->andWhere( ['>=', 'created', $date]);
+        }
+
         $tasks->andFilterWhere(['like', 'tasks.title', $this->searchText])
             ->andFilterWhere(['in', 'tasks.category_id', $this->categories]);
 
         return $tasks->all();
+    }
+
+    private function getInterval($period)
+    {
+        switch ($period) {
+            case 'week':
+                return '1 week';
+            case 'month':
+                return '1 month';
+            default:
+                return '1 day';
+        }
     }
 }
