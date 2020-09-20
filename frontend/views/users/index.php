@@ -1,6 +1,7 @@
 <?php
 /* @var $this yii\web\View */
 /* @var $users array */
+/* @var $sort string */
 /* @var $model frontend\models\UserForm */
 
 use TaskForce\Helper\Stars;
@@ -12,14 +13,14 @@ $this->title = 'Task Force';
     <div class="user__search-link">
         <p>Сортировать по:</p>
         <ul class="user__search-list">
-            <li class="user__search-item user__search-item--current">
-                <a href="#" class="link-regular">Рейтингу</a>
+            <li class="user__search-item <?= $sort == 'score' ? 'user__search-item--current' : '' ?>">
+                <a href="score" class="link-regular">Рейтингу</a>
             </li>
-            <li class="user__search-item">
-                <a href="#" class="link-regular">Числу заказов</a>
+            <li class="user__search-item <?= $sort == 'tasks' ? 'user__search-item--current' : '' ?>">
+                <a href="tasks" class="link-regular">Числу заказов</a>
             </li>
-            <li class="user__search-item">
-                <a href="#" class="link-regular">Популярности</a>
+            <li class="user__search-item <?= $sort == 'popularity' ? 'user__search-item--current' : '' ?>">
+                <a href="popularity" class="link-regular">Популярности</a>
             </li>
         </ul>
     </div>

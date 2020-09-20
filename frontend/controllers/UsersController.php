@@ -7,11 +7,11 @@ use Yii;
 
 class UsersController extends \yii\web\Controller
 {
-    public function actionIndex()
+    public function actionIndex($sort = '')
     {
         $form = new UserForm();
         $form->load(Yii::$app->request->post());
-        $users = $form->getUsers();
-        return $this->render('index', ['users' => $users, 'model' => $form]);
+        $users = $form->getUsers($sort);
+        return $this->render('index', ['users' => $users, 'model' => $form, 'sort' => $sort]);
     }
 }

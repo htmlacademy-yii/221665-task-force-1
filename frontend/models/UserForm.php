@@ -36,15 +36,16 @@ class UserForm extends \yii\base\Model
         ];
     }
 
-    public function getUsers()
+    public function getUsers($sort)
     {
         $users = Users::find()
             ->innerJoinWith('usersCategories uc')
-            ->leftJoin('tasks', 'tasks.executor_id = users.id');
+            ->leftJoin('tasks', 'tasks.executor_id = users.id')
+            ->leftJoin('comments c', 'tasks.id = c.task_id');
 
         if ($this->categories) {
             $users->where(['in', 'uc.category_id', $this->categories])->groupBy('name')
-                ->having(['=', 'count(distinct uc.category_id)', count($this->categories)]); // todo не придумал как еще вывести все категории
+                ->having(['=', 'count(distinct uc.category_id)', count($this->categories)]); // todo не придумал как еще выбрать все категории
         }
 
         if ($this->online) {
@@ -63,12 +64,19 @@ class UserForm extends \yii\base\Model
         }
 
         if ($this->hasFeedback) {
-            $users->leftJoin('comments c', 'tasks.id = c.task_id')
-                ->addGroupBy('name')->andHaving('count(c.id) > 0');
+            $users->addGroupBy('name')->andHaving('count(c.id) > 0');
         }
 
 
         $users->andFilterWhere(['like', 'name', $this->searchName]);
+
+        if ($sort == 'popularity') {
+            $users->orderBy('users.popularity');
+        } elseif ($sort == 'tasks') {
+            $users->addGroupBy('name')->orderBy('count(distinct tasks.id)');
+        } elseif ($sort == 'score') {
+            $users->addGroupBy('name')->orderBy('avg(c.score)');
+        }
 
         return $users->all();
     }

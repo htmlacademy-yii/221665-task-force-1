@@ -16,7 +16,8 @@ return [
             'rules' => [
 //                'tasks' => 'tasks/index',
 //                'users' => 'users/index',
-                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>'
+                'users/<sort:\w+>' => 'users/index',
+                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
             ],
         ],
     ],
