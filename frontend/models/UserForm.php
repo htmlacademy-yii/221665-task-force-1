@@ -1,0 +1,81 @@
+<?php
+
+
+namespace frontend\models;
+
+use frontend\models\Users;
+
+class UserForm extends \yii\base\Model
+{
+
+    public $categories;
+    public $isFree;
+    public $online;
+    public $hasFeedback;
+    public $isFavorite;
+    public $searchName;
+
+    public function rules()
+    {
+        return [
+            [['categories', 'isFree', 'online', 'hasFeedback', 'isFavorite', 'searchName'], 'safe'],
+            [['searchName'], 'string', 'length' => [4, 24]],
+            [['hasFeedback', 'online', 'isFree', 'isFavorite'], 'boolean'],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'categories' => 'Категории',
+            'hasFeedback' => 'Есть отзывы',
+            'online' => 'Сейчас онлайн',
+            'searchName' => 'Поиск по имени',
+            'isFree' => 'Сейчас свободен',
+            'isFavorite' => 'В избранном'
+        ];
+    }
+
+    public function getUsers()
+    {
+        $users = Users::find()
+            ->innerJoinWith('usersCategories uc')
+            ->leftJoin('tasks', 'tasks.executor_id = users.id');
+
+        if ($this->categories) {
+            $users->where(['in', 'uc.category_id', $this->categories])->groupBy('name')
+                ->having(['=', 'count(distinct uc.category_id)', count($this->categories)]); // todo не придумал как еще вывести все категории
+        }
+
+        if ($this->online) {
+            $lastVisit = (new \DateTime())->modify('-30m')->format('Y-m-d H:i:s');
+            $users->andWhere(['>=', 'activity', $lastVisit]);
+        }
+
+        if ($this->isFree) {
+            $users->andWhere(['not in', 'tasks.status_id', [1, 3]]);
+        }
+
+        if ($this->isFavorite) {
+            // todo пока у нас нет авторизации вывожу всех пользователей попавших в Избранное
+            $users->leftJoin('favorites f', 'users.id = f.selected_user_id')
+                ->addGroupBy('name')->andHaving('count(f.user_id) > 0');
+        }
+
+        if ($this->hasFeedback) {
+            $users->leftJoin('comments c', 'tasks.id = c.task_id')
+                ->addGroupBy('name')->andHaving('count(c.id) > 0');
+        }
+
+
+        $users->andFilterWhere(['like', 'name', $this->searchName]);
+
+        return $users->all();
+    }
+
+    public function getCategories()
+    {
+        return array_column(Categories::find()->all(), 'title', 'id');
+    }
+
+}

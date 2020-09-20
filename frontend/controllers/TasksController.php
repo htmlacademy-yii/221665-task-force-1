@@ -16,5 +16,4 @@ class TasksController extends \yii\web\Controller
         return $this->render('index', ['tasks' => $tasks, 'model' => $form]);
     }
 
-
 }

@@ -4,7 +4,6 @@
 namespace frontend\models;
 
 use yii\base\Model;
-use frontend\models\Categories;
 use frontend\models\Tasks;
 
 class TaskForm extends Model
@@ -74,15 +73,15 @@ class TaskForm extends Model
         return $tasks->all();
     }
 
-    private function getInterval($period)
+    private function getInterval(string $period):string // не придумал как передать интервал параметром в SQL
     {
         switch ($period) {
+            case 'day':
+                return '1 day';
             case 'week':
                 return '1 week';
             case 'month':
                 return '1 month';
-            default:
-                return '1 day';
         }
     }
 }

@@ -48,7 +48,6 @@ $this->title = 'Task Force';
             'method' => 'post',
         ]); ?>
         <fieldset class="search-task__categories">
-            <legend>Категории</legend>
             <?= $form->field($model, 'categories')->checkboxList($model->getCategories()) ?>
         </fieldset>
         <fieldset class="search-task__categories">
