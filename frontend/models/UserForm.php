@@ -44,8 +44,8 @@ class UserForm extends \yii\base\Model
             ->leftJoin('comments c', 'tasks.id = c.task_id');
 
         if ($this->categories) {
-            $users->where(['in', 'uc.category_id', $this->categories])->groupBy('name')
-                ->having(['=', 'count(distinct uc.category_id)', count($this->categories)]); // todo не придумал как еще выбрать все категории
+            $users->where(['in', 'uc.category_id', $this->categories]);
+            // fixme категории применяются независимо
         }
 
         if ($this->online) {
@@ -59,12 +59,11 @@ class UserForm extends \yii\base\Model
 
         if ($this->isFavorite) {
             // todo пока у нас нет авторизации вывожу всех пользователей попавших в Избранное
-            $users->leftJoin('favorites f', 'users.id = f.selected_user_id')
-                ->addGroupBy('name')->andHaving('count(f.user_id) > 0');
+            $users->innerJoin('favorites f', 'users.id = f.selected_user_id');
         }
 
         if ($this->hasFeedback) {
-            $users->addGroupBy('name')->andHaving('count(c.id) > 0');
+            $users->innerJoin('responses r', 'tasks.id = r.task_id');
         }
 
 
