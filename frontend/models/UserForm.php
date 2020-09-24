@@ -63,18 +63,18 @@ class UserForm extends \yii\base\Model
         }
 
         if ($this->hasFeedback) {
-            $users->innerJoin('responses r', 'tasks.id = r.task_id');
+            $users->andWhere(['is not', 'c.task_id', null]);
         }
 
 
         $users->andFilterWhere(['like', 'name', $this->searchName]);
 
         if ($sort == 'popularity') {
-            $users->orderBy('users.popularity');
+            $users->orderBy('users.popularity DESC');
         } elseif ($sort == 'tasks') {
-            $users->addGroupBy('name')->orderBy('count(distinct tasks.id)');
+            $users->addGroupBy('name')->orderBy('count(distinct tasks.id) DESC');
         } elseif ($sort == 'score') {
-            $users->addGroupBy('name')->orderBy('avg(c.score)');
+            $users->addGroupBy('name')->orderBy('avg(c.score) DESC');
         }
 
         return $users->all();
