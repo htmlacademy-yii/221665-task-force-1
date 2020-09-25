@@ -2,14 +2,18 @@
 
 namespace frontend\controllers;
 
-use frontend\models\Tasks;
+use Yii;
+use frontend\models\TaskForm;
 
 class TasksController extends \yii\web\Controller
 {
     public function actionIndex()
     {
-        $tasks = Tasks::find()->where(['status_id' => '1'])->joinWith(['customer', 'category', 'city'])->all();
-        return $this->render('index', ['tasks' => $tasks]);
+        $form = new TaskForm();
+        $form->load(Yii::$app->request->post());
+        $tasks = $form->getTasks();
+
+        return $this->render('index', ['tasks' => $tasks, 'model' => $form]);
     }
 
 }
