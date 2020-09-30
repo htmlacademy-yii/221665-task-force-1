@@ -152,6 +152,11 @@ class Users extends \yii\db\ActiveRecord
         return $this->hasMany(Tasks::className(), ['executor_id' => 'id']);
     }
 
+    public function getTasksCount()
+    {
+        return count($this->hasMany(Tasks::className(), ['customer_id' => 'id'])->all());
+    }
+
     /**
      * Gets query for [[Comments]].
      *
