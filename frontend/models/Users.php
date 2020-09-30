@@ -152,9 +152,10 @@ class Users extends \yii\db\ActiveRecord
         return $this->hasMany(Tasks::className(), ['executor_id' => 'id']);
     }
 
+
     public function getTasksCount()
     {
-        return count($this->hasMany(Tasks::className(), ['customer_id' => 'id'])->all());
+        return $this->hasMany(Tasks::className(), ['customer_id' => 'id'])->count();
     }
 
     /**
@@ -215,6 +216,11 @@ class Users extends \yii\db\ActiveRecord
     public function getCategories()
     {
         return $this->hasMany(Categories::className(), ['id' => 'category_id'])->viaTable('users_categories', ['user_id' => 'id']);
+    }
+
+    public function getAge()
+    {
+        return (new \DateTime())->diff(new \DateTime($this->birthday))->y;
     }
 
     /**

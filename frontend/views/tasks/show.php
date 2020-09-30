@@ -2,10 +2,8 @@
 /* @var $this yii\web\View */
 /* @var $task frontend\models\Tasks */
 
-/* @var $model frontend\models\TaskForm */
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
 
 $this->title = 'Task Force';
 ?>
