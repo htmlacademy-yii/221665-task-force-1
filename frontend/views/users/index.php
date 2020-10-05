@@ -5,6 +5,8 @@
 /* @var $model frontend\models\UserForm */
 
 use TaskForce\Helper\Stars;
+use yii\helpers\BaseUrl;
+use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 $this->title = 'Task Force';
@@ -41,7 +43,7 @@ $this->title = 'Task Force';
                     ) ?></span>
             </div>
             <div class="feedback-card__top--name user__search-card">
-                <p class="link-name"><a href="#" class="link-regular"><?= $user->name ?></a></p>
+                <p class="link-name"><a href="<?= BaseUrl::to(['users/view', 'id' => $user->id]) ?>" class="link-regular"><?= Html::encode($user->name) ?></a></p>
                 <?= Stars::render($user->score)?>
                 <b>
                 <?= $user->score ?>
