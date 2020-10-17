@@ -51,6 +51,7 @@ class Users extends \yii\db\ActiveRecord
         return [
             [['name', 'email', 'password'], 'required'],
             ['email', 'email'],
+            ['email', 'unique'],
             [['city_id', 'popularity', 'settings'], 'integer'],
             [['birthday', 'activity'], 'safe'],
             [['about'], 'string'],
