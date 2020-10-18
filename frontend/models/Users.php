@@ -50,11 +50,13 @@ class Users extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'email', 'password'], 'required'],
+            ['email', 'email'],
+            ['email', 'unique'],
             [['city_id', 'popularity', 'settings'], 'integer'],
             [['birthday', 'activity'], 'safe'],
             [['about'], 'string'],
             [['name', 'avatar', 'email', 'phone', 'skype', 'telegram', 'password'], 'string', 'max' => 50],
-            [['password'], 'string', 'max' => 256],
+            [['password'], 'string', 'min' => 8],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cities::className(), 'targetAttribute' => ['city_id' => 'id']],
         ];
     }
@@ -66,15 +68,15 @@ class Users extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'city_id' => 'City ID',
+            'name' => 'Ваше имя',
+            'city_id' => 'Город проживания',
             'avatar' => 'Avatar',
-            'email' => 'Email',
+            'email' => 'Электронная почта',
             'phone' => 'Phone',
             'skype' => 'Skype',
             'telegram' => 'Telegram',
             'birthday' => 'Birthday',
-            'password' => 'Password',
+            'password' => 'Пароль',
             'about' => 'About',
             'popularity' => 'Popularity',
             'activity' => 'Activity',
